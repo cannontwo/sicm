@@ -50,3 +50,21 @@
 
 (define (L-rotating-rectangular m Omega)
   (compose (L-rotating-polar m Omega) (F->C r->p)))
+
+(define ((T-pend m l g ys) local)
+  (let ((t (time local))
+        (theta (coordinate local))
+        (thetadot (velocity local)))
+    (let ((vys (D ys)))
+      (* 1/2 m
+         (+ (square (* l thetadot))
+            (square (vys t))
+            (* 2 l (vys t) thetadot (sin theta)))))))
+
+(define ((V-pend m l g ys) local)
+  (let ((t (time local))
+        (theta (coordinate local)))
+    (* m g (- (ys t) (* l (cos theta))))))
+
+(define L-pend (- T-pend V-pend))
+
